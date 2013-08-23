@@ -23,6 +23,7 @@ ${LIBGTEST}:
 	ar -rv ${LIBGTEST} gtest-all.o gtest_main.o
 
 mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
+mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
 
 %Test: %Test.cpp ${SRC_DIR}/%.o
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
