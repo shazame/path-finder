@@ -15,7 +15,7 @@ class Tile
 		~Tile();
 
 		void setTileType(TileType tt);
-		bool isObstacle();
+		bool isObstacle() const;
 
 	private:
 		int      cost_;

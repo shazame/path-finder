@@ -22,7 +22,9 @@ ${LIBGTEST}:
 	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest_main.cc
 	ar -rv ${LIBGTEST} gtest-all.o gtest_main.o
 
-%Test: %Test.cpp ${SRC_DIR}/%.cpp ${SRC_DIR}/%.hpp
+mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
+
+%Test: %Test.cpp ${SRC_DIR}/%.o
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
 
 runtest: $(BIN)
@@ -31,7 +33,7 @@ runtest: $(BIN)
 	done
 
 clean:
-	rm -f gtest-all.o gtest_main.o *~
+	rm -f $(BIN) *~
 
 mrproper: clean
-	rm -f $(BIN) ${LIBGTEST}
+	rm -f ${LIBGTEST} gtest-all.o gtest_main.o 

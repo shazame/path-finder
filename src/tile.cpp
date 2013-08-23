@@ -14,7 +14,8 @@ Tile::setTileType(TileType tt) {
 }
 
 bool
-Tile::isObstacle() {
+Tile::isObstacle() const {
+
 	return type_ == TT_OBSTACLE;
 }
 
