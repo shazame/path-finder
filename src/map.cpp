@@ -1,6 +1,7 @@
 #include "map.hpp"
 
 #include <cstdlib>
+#include <ctime>
 
 namespace path_finder {
 
@@ -10,6 +11,8 @@ Map::Map(): height_(0), width_(0), tiles_() {
 Map::Map(unsigned int height, unsigned int width):
 	height_( height ), width_( width ),
 	tiles_( height_, std::vector<Tile>( width_ ) ) {
+	// Initialize the random number generator
+	std::srand( std::time( 0 ));
 }
 
 Map::~Map() {
@@ -19,8 +22,11 @@ void
 Map::randomize(void) {
 	for ( unsigned int r = 0; r < height_; r++ ) {
 		for ( unsigned int c = 0; c < width_; c++ ) {
-			if ( rand() % 2 ) {
-				setObstacle(r, c);
+			if ( std::rand() % 2 ) {
+				setObstacle( true, r, c );
+			}
+			else {
+				setObstacle( false, r, c );
 			}
 		}
 	}
@@ -50,12 +56,15 @@ Map::getWidth(void) const {
 // TODO
 // Add exception if position over size
 void
-Map::setObstacle(unsigned int row, unsigned int col) {
+Map::setObstacle(bool is_obstacle, unsigned int row, unsigned int col) {
 	if ( !isValidPos(row, col) ) {
 		return;
 	}
+	else if ( is_obstacle ) {
+		tiles_[row][col].setTileType( Tile::TT_OBSTACLE );	
+	}
 	else {
-		return tiles_[row][col].setTileType( Tile::TT_OBSTACLE );	
+		tiles_[row][col].setTileType( Tile::TT_NORMAL );	
 	}
 }
 

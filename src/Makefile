@@ -1,6 +1,6 @@
 CPPFLAGS=-I.
 CXXFLAGS=-Wall -Wextra -ggdb
-LDFLAGS=
+LDFLAGS=-lncurses
 
 SRCDIR=.
 SRC=$(wildcard $(SRCDIR)/*.cpp)
@@ -8,7 +8,10 @@ OBJ=$(SRC:.cpp=.o)
 
 .PHONY: all depend clean
 
-all: $(OBJ)
+all: main
+
+main: $(OBJ)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
 
 depend: .depend
 
@@ -32,6 +35,6 @@ clean:
 	${MAKE} -C gtest clean
 
 mrproper: clean
-	@ rm -f $(OBJ) *.gch .depend
+	@ rm -f main $(OBJ) *.gch .depend
 	${MAKE} -C gtest mrproper
 

@@ -21,7 +21,7 @@ class Map
 		unsigned int getHeight(void) const;
 		unsigned int getWidth(void)  const;
 
-		void setObstacle(unsigned int row, unsigned int col);
+		void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col);
 		bool hasObstacle(unsigned int row, unsigned int col) const;
 
 	protected:
@@ -31,6 +31,6 @@ class Map
 		bool isValidPos(unsigned int row, unsigned int col) const;
 };
 
-}
+} // namespace path_finder
 
 #endif // MAP_H

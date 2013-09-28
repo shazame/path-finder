@@ -5,10 +5,11 @@
 namespace path_finder {
 
 Maze::Maze(): Map() {
+	randomize();
 }
 
 Maze::Maze(unsigned int height, unsigned int width): Map( height, width ) {
-	// Generate a random maze
+	randomize();
 }
 
 Maze::~Maze() {
