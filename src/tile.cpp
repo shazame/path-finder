@@ -19,4 +19,14 @@ Tile::isObstacle() const {
 	return type_ == TT_OBSTACLE;
 }
 
+void
+Tile::setCost( int cost ) {
+	cost_ = cost;
+}
+
+int
+Tile::getCost() const {
+	return cost_;
+}
+
 } // end namespace path_finder

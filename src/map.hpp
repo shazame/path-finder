@@ -24,6 +24,9 @@ class Map
 		void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col);
 		bool hasObstacle(unsigned int row, unsigned int col) const;
 
+		void setCost(int cost, unsigned int row, unsigned int col);
+		int  getCost(unsigned int row, unsigned int col) const;
+
 	protected:
 		unsigned int height_, width_;
 		std::vector<std::vector<Tile> > tiles_;

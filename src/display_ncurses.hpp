@@ -4,6 +4,8 @@
 #include <ncurses.h>
 #include "display.hpp"
 
+//#define DEBUG_DISPLAY
+
 namespace path_finder {
 
 class DisplayNcurses: public Display
@@ -14,6 +16,7 @@ class DisplayNcurses: public Display
 	~DisplayNcurses();
 	void init( Map & );
 	void printMap( Map & )const;
+	void printTileRed(unsigned int row, unsigned int col) const ;
 
 	private:
 	WINDOW* map_win_;

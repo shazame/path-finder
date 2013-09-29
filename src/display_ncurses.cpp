@@ -33,7 +33,9 @@ DisplayNcurses::init(Map &m) {
     start_color();
 
 	init_pair( 1, COLOR_WHITE, COLOR_WHITE );
-	init_pair( 2, COLOR_BLACK, COLOR_BLACK );
+	init_pair( 2, COLOR_BLUE, COLOR_BLUE );
+	init_pair( 3, COLOR_RED, COLOR_RED );
+	//init_pair( 2, COLOR_BLACK, COLOR_BLACK );
 
 	// prepare the console for writing
 	refresh();
@@ -69,13 +71,27 @@ DisplayNcurses::printTile(Map &m, unsigned int row, unsigned int col) const {
 		wattron(   map_win_, COLOR_PAIR( 2 ));
 		for ( int r = 0; r < tile_height_; r++ ) {
 			for ( int c = 0; c < tile_width_; c++ ) {
-				mvwprintw( map_win_, 
-						row * tile_height_ + r, 
+				mvwprintw( map_win_,
+						row * tile_height_ + r,
 						col * tile_width_  + c, " " );
 			}
 		}
 		wattroff(  map_win_, COLOR_PAIR( 2 ));
 	}
+}
+
+void
+DisplayNcurses::printTileRed(unsigned int row, unsigned int col) const {
+		wattron(   map_win_, COLOR_PAIR( 3 ));
+		for ( int r = 0; r < tile_height_; r++ ) {
+			for ( int c = 0; c < tile_width_; c++ ) {
+				mvwprintw( map_win_,
+						row * tile_height_ + r,
+						col * tile_width_  + c, " " );
+			}
+		}
+		wattroff(  map_win_, COLOR_PAIR( 3 ));
+		wrefresh( map_win_ );
 }
 
 } // end namespace path_finder

@@ -81,6 +81,24 @@ Map::hasObstacle(unsigned int row, unsigned int col) const {
 	}
 }
 
+void
+Map::setCost(int cost, unsigned int row, unsigned int col) {
+	if ( !isValidPos(row, col) ) {
+		return;
+	}
+
+	tiles_[row][col].setCost( cost );
+}
+
+int
+Map::getCost(unsigned int row, unsigned int col) const {
+	if ( !isValidPos(row, col) ) {
+		return -1;
+	}
+
+	return tiles_[row][col].getCost();
+}
+
 bool
 Map::isValidPos(unsigned int row, unsigned int col) const {
 	return ( row < height_ && col < width_ );
