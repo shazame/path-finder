@@ -5,13 +5,11 @@
 #include "map.hpp"
 #include "display.hpp"
 
-#define DEBUG_DISPLAY
-
 namespace path_finder {
 
 class DisplayNcurses: public Display
 {
-	public:
+public:
 	DisplayNcurses();
 	DisplayNcurses( int tile_height, int tile_width );
 	~DisplayNcurses();
@@ -19,7 +17,7 @@ class DisplayNcurses: public Display
 	void printMap( Map & )const;
 	void printTileRed(unsigned int row, unsigned int col) const ;
 
-	protected:
+protected:
 	WINDOW* map_win_;
 	int tile_height_, tile_width_;
 

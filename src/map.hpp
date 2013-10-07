@@ -9,39 +9,39 @@ namespace path_finder {
 
 class Map
 {
-	public:
-		Map();
-		Map(unsigned int height, unsigned int width);
-		virtual ~Map();
+public:
+	Map();
+	Map(unsigned int height, unsigned int width);
+	virtual ~Map();
 
-		// Init the map with a random state
-		virtual void randomize(void);
+	// Init the map with a random state
+	virtual void randomize(void);
 
-		void resize(unsigned int h, unsigned int w);
-		unsigned int getHeight(void) const;
-		unsigned int getWidth(void)  const;
+	void resize(unsigned int h, unsigned int w);
+	unsigned int getHeight(void) const;
+	unsigned int getWidth(void)  const;
 
-		void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col);
-		bool hasObstacle(unsigned int row, unsigned int col) const;
+	void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col);
+	bool hasObstacle(unsigned int row, unsigned int col) const;
 
-		void setCost(int cost, unsigned int row, unsigned int col);
-		int  getCost(unsigned int row, unsigned int col) const;
+	void setCost(int cost, unsigned int row, unsigned int col);
+	int  getCost(unsigned int row, unsigned int col) const;
 
-		bool isEntry( unsigned int row, unsigned int col ) const;
-		bool isExit(  unsigned int row, unsigned int col ) const;
+	bool isEntry( unsigned int row, unsigned int col ) const;
+	bool isExit(  unsigned int row, unsigned int col ) const;
 
-	protected:
-		struct Cell {
-			unsigned int r_, c_;
-		};
+protected:
+	struct Cell {
+		unsigned int r_, c_;
+	};
 
-		Cell exit_cell_;
-		Cell entry_cell_;
+	Cell exit_cell_;
+	Cell entry_cell_;
 
-		unsigned int height_, width_;
-		std::vector<std::vector<Tile> > tiles_;
+	unsigned int height_, width_;
+	std::vector<std::vector<Tile> > tiles_;
 
-		bool isValidPos(unsigned int row, unsigned int col) const;
+	bool isValidPos(unsigned int row, unsigned int col) const;
 };
 
 } // namespace path_finder

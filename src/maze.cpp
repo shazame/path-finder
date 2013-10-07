@@ -6,8 +6,6 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include <unistd.h>
-
 namespace path_finder {
 
 Maze::Maze(): Map() {
@@ -31,13 +29,18 @@ Maze::~Maze() {
  */
 void
 Maze::randomize( void ) {
+	randomizeInit();
 
-#ifdef DEBUG_DISPLAY
-	DisplayNcurses display( 1, 1 );
+	// While there are cells in the candidate list
+	while ( randomizeContinue() ) {
+		randomizeStep();
+	}
 
-	display.init( *this );
-#endif // DEBUG_DISPLAY
+	randomizeEnd();
+}
 
+void
+Maze::randomizeInit( void ) {
 	// Place the walls
 	for ( unsigned int r = 0; r < height_; r++ ) {
 		for ( unsigned int c = 0; c < width_; c++ ) {
@@ -50,43 +53,42 @@ Maze::randomize( void ) {
 		}
 	}
 
-	std::vector<Cell*> candidate_cell_list;
-
 	// Choose a cell near the bounds and mark it as part of the maze
 	exit_cell_ = randomBorderCell();
 	addCellToMaze( exit_cell_ );
 
 	// Add the cell neighbours to the maze cell candidate list
-	addCellNeighbours( exit_cell_, candidate_cell_list );
+	addCellNeighboursToCandidateList( exit_cell_ );
+}
 
-	// While there are cells in the candidate list
-	while ( !candidate_cell_list.empty() ) {
-		// Pick a random cell from the list
-		Cell* c = pickRandomCell( candidate_cell_list );
-#ifdef DEBUG_DISPLAY
-		display.printMap( *this );
-		usleep( 1000 );
-#endif // DEBUG_DISPLAY
+bool
+Maze::randomizeContinue( void ) {
+	return !candidate_cell_list.empty();
+}
 
+void
+Maze::randomizeStep( void ) {
+	// Pick a random cell from the candidate list
+	Cell* c = pickRandomCell( candidate_cell_list );
 
-		// Link it with one of it's neighboring cells from the maze
-		linkCellToMaze( *c );
+	// Link it with one of it's neighboring cells from the maze
+	linkCellToMaze( *c );
 
-		// Add the neighboring cells to the candidate list.
-		addCellNeighbours( *c, candidate_cell_list );
+	// Add the neighboring cells to the candidate list.
+	addCellNeighboursToCandidateList( *c );
 
-		if ( isBorderCell( *c )) {
-			entry_cell_ = *c;
-		}
-		delete c;
+	// If the cell is on the border, we put it as a potential entry
+	if ( isBorderCell( *c )) {
+		entry_cell_ = *c;
 	}
 
+	delete c;
+}
+
+void
+Maze::randomizeEnd( void ) {
 	setOnBorder( entry_cell_ );
 	setOnBorder( exit_cell_ );
-#ifdef DEBUG_DISPLAY
-	display.printMap( *this );
-	getchar();
-#endif // DEBUG_DISPLAY
 }
 
 bool
@@ -146,15 +148,15 @@ Maze::randomBorderCell( void ) {
 }
 
 void
-Maze::addCellNeighbours( Cell& cell, std::vector<Cell*>& list ) {
-	addCellToList( cell.r_ - 2, cell.c_, list );
-	addCellToList( cell.r_ + 2, cell.c_, list );
-	addCellToList( cell.r_, cell.c_ - 2, list );
-	addCellToList( cell.r_, cell.c_ + 2, list );
+Maze::addCellNeighboursToCandidateList( Cell& cell ) {
+	addCellToCandidateList( cell.r_ - 2, cell.c_ );
+	addCellToCandidateList( cell.r_ + 2, cell.c_ );
+	addCellToCandidateList( cell.r_, cell.c_ - 2 );
+	addCellToCandidateList( cell.r_, cell.c_ + 2 );
 }
 
 void
-Maze::addCellToList( int row, int col, std::vector<Cell*>& list ) {
+Maze::addCellToCandidateList( int row, int col ) {
 	if ( isValidPos( row, col )
 			&& !isCellInMaze( row, col )
 			&& 43 != Map::getCost( row, col )) {
@@ -162,7 +164,7 @@ Maze::addCellToList( int row, int col, std::vector<Cell*>& list ) {
 		Cell* c = new Cell;
 		c->r_ = row;
 		c->c_ = col;
-		list.push_back( c );
+		candidate_cell_list.push_back( c );
 	}
 }
 

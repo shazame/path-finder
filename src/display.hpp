@@ -7,7 +7,7 @@ namespace path_finder {
 
 class Display
 {
-	public:
+public:
 	// All the resources used by the graphical library used are freed here
 	virtual ~Display() {}
 	// All the initialisation needed for the graphical library are done here
@@ -21,7 +21,7 @@ class Display
 		}
 	}
 
-	protected:
+protected:
 	// Specific graphical library function call are done here
 	virtual void printMapTile(Map &, unsigned int row, unsigned int col) const = 0;
 };
