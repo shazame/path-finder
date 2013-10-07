@@ -102,9 +102,4 @@ DisplayNcurses::printTile( unsigned int row, unsigned int col,
 	wattroff( map_win_, COLOR_PAIR( color_no ));
 }
 
-void
-DisplayNcurses::printTileRed(unsigned int row, unsigned int col) const {
-	printTile( row, col, 3, " " );
-}
-
 } // end namespace path_finder

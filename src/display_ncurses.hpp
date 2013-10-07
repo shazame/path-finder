@@ -15,7 +15,6 @@ public:
 	~DisplayNcurses();
 	void init( Map & );
 	void printMap( Map & )const;
-	void printTileRed(unsigned int row, unsigned int col) const ;
 
 protected:
 	WINDOW* map_win_;
