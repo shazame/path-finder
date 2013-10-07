@@ -18,14 +18,8 @@ class Maze: public Map
 		virtual void randomize(void);
 
 	private:
-
-		struct Cell {
-			unsigned int r_, c_;
-		};
-
-		Cell exit_cell_;
-		Cell entry_cell_;
-
+		bool isBorderCell( Cell& cell );
+		void setOnBorder( Cell& cell );
 		Cell& randomBorderCell(void);
 
 		void addCellNeighbours( Cell& cell, std::vector<Cell*>& list ) ;

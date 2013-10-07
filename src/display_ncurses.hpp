@@ -2,9 +2,10 @@
 #define DISPLAY_NCURSES_H
 
 #include <ncurses.h>
+#include "map.hpp"
 #include "display.hpp"
 
-//#define DEBUG_DISPLAY
+#define DEBUG_DISPLAY
 
 namespace path_finder {
 
@@ -18,11 +19,13 @@ class DisplayNcurses: public Display
 	void printMap( Map & )const;
 	void printTileRed(unsigned int row, unsigned int col) const ;
 
-	private:
+	protected:
 	WINDOW* map_win_;
 	int tile_height_, tile_width_;
 
-	void printTile( Map &, unsigned int row, unsigned int col ) const;
+	void printMapTile( Map &, unsigned int row, unsigned int col ) const;
+	void printTile( unsigned int row, unsigned int col,
+			int color_no, const char* car ) const;
 };
 
 } // end namespace path_finder

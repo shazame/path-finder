@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include <unistd.h>
+
 namespace path_finder {
 
 Maze::Maze(): Map() {
@@ -16,7 +18,7 @@ Maze::Maze(): Map() {
  * Cells are surrounded by walls, thus we need tiles for the walls and the
  * cells.
  */
-Maze::Maze(unsigned int height, unsigned int width):
+Maze::Maze( unsigned int height, unsigned int width ):
 	Map( 2 * height + 1, 2 * width + 1 ) {
 	randomize();
 }
@@ -28,7 +30,7 @@ Maze::~Maze() {
  * (cf. en.wikipedia.org/wiki/Maze_generation_algorithm)
  */
 void
-Maze::randomize(void) {
+Maze::randomize( void ) {
 
 #ifdef DEBUG_DISPLAY
 	DisplayNcurses display( 1, 1 );
@@ -63,8 +65,7 @@ Maze::randomize(void) {
 		Cell* c = pickRandomCell( candidate_cell_list );
 #ifdef DEBUG_DISPLAY
 		display.printMap( *this );
-		display.printTileRed( c->r_, c->c_ );
-		getchar();
+		usleep( 1000 );
 #endif // DEBUG_DISPLAY
 
 
@@ -74,12 +75,48 @@ Maze::randomize(void) {
 		// Add the neighboring cells to the candidate list.
 		addCellNeighbours( *c, candidate_cell_list );
 
+		if ( isBorderCell( *c )) {
+			entry_cell_ = *c;
+		}
 		delete c;
 	}
+
+	setOnBorder( entry_cell_ );
+	setOnBorder( exit_cell_ );
+#ifdef DEBUG_DISPLAY
+	display.printMap( *this );
+	getchar();
+#endif // DEBUG_DISPLAY
+}
+
+bool
+Maze::isBorderCell( Cell& c ) {
+	return ( c.r_ == 1 || c.r_ == height_ - 2 || c.c_ == 1 || c.c_ == width_  - 2 );
+}
+
+void
+Maze::setOnBorder( Cell& c ) {
+	if ( c.r_ == 1 ) {
+		c.r_--;
+	}
+	else if ( c.r_ == height_ - 2 ) {
+		c.r_++;
+	}
+	else if ( c.c_ == 1 ) {
+		c.c_--;
+	}
+	else if ( c.c_ == width_  - 2 ) {
+		c.c_++;
+	}
+	else {
+		printf("ERROR: entry not on borders\n");
+		return;
+	}
+	setObstacle( false, c.r_, c.c_ );
 }
 
 Maze::Cell&
-Maze::randomBorderCell(void) {
+Maze::randomBorderCell( void ) {
 	int wall = std::rand() % 4;
 
 	switch ( wall ) {
@@ -87,25 +124,21 @@ Maze::randomBorderCell(void) {
 			// Cell on North wall
 			exit_cell_.r_ = 1;
 			exit_cell_.c_ = (std::rand() % (( width_ - 1 ) / 2 )) * 2 + 1;
-			setObstacle( false, 0, exit_cell_.c_ );
 			break;
 		case 1:
 			// Cell on East wall
 			exit_cell_.c_ = width_ - 2;
 			exit_cell_.r_ = (std::rand() % (( height_ - 1 ) / 2 )) * 2 + 1;
-			setObstacle( false, exit_cell_.r_, exit_cell_.c_ + 1 );
 			break;
 		case 2:
 			// Cell on South wall
 			exit_cell_.r_ = height_ - 2;
 			exit_cell_.c_ = (std::rand() % (( width_ - 1 ) / 2 )) * 2 + 1;
-			setObstacle( false, exit_cell_.r_ + 1, exit_cell_.c_ );
 			break;
 		default:
 			// Cell on West wall
 			exit_cell_.c_ = 1;
 			exit_cell_.r_ = (std::rand() % (( height_ - 1 ) / 2 )) * 2 + 1;
-			setObstacle( false, exit_cell_.r_, 0 );
 			break;
 	}
 
@@ -158,24 +191,28 @@ Maze::linkCellToMaze( Cell& cell ) {
 		int i = std::rand() % 4;
 		switch( i ) {
 			case 0:
+				// West cell
 				if ( isCellInMaze( cell.r_, cell.c_ - 2 )) {
 					c = new Cell();
 					c->r_ =  cell.r_; c->c_ = cell.c_ - 1;
 				}
 				break;
 			case 1:
+				// North cell
 				if ( isCellInMaze( cell.r_ - 2, cell.c_ )) {
 					c = new Cell();
 					c->r_ = cell.r_ - 1; c->c_ = cell.c_;
 				}
 				break;
 			case 2:
+				// East cell
 				if ( isCellInMaze( cell.r_, cell.c_ + 2 )) {
 					c = new Cell();
 					c->r_ = cell.r_; c->c_ = cell.c_ + 1;
 				}
 				break;
 			default:
+				// South cell
 				if ( isCellInMaze( cell.r_ + 2, cell.c_ )) {
 					c = new Cell();
 					c->r_ = cell.r_ + 1; c->c_ = cell.c_;

@@ -16,14 +16,14 @@ class Display
 	virtual void printMap(Map &m) const {
 		for ( unsigned int r = 0; r < m.getHeight(); r++ ) {
 			for ( unsigned int c = 0; c < m.getWidth(); c++ ) {
-				printTile(m, r, c);
+				printMapTile(m, r, c);
 			}
 		}
 	}
 
-	private:
+	protected:
 	// Specific graphical library function call are done here
-	virtual void printTile(Map &, unsigned int row, unsigned int col) const = 0;
+	virtual void printMapTile(Map &, unsigned int row, unsigned int col) const = 0;
 };
 
 } // end namespace path_finder

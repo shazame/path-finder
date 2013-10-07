@@ -33,9 +33,10 @@ DisplayNcurses::init(Map &m) {
     start_color();
 
 	init_pair( 1, COLOR_WHITE, COLOR_WHITE );
-	init_pair( 2, COLOR_BLUE, COLOR_BLUE );
-	init_pair( 3, COLOR_RED, COLOR_RED );
+	init_pair( 2, COLOR_BLUE,  COLOR_BLUE  );
 	//init_pair( 2, COLOR_BLACK, COLOR_BLACK );
+	init_pair( 3, COLOR_BLACK, COLOR_RED   );
+	init_pair( 4, COLOR_BLACK, COLOR_GREEN );
 
 	// prepare the console for writing
 	refresh();
@@ -66,32 +67,43 @@ DisplayNcurses::printMap(Map &m) const {
 }
 
 void
-DisplayNcurses::printTile(Map &m, unsigned int row, unsigned int col) const {
+DisplayNcurses::printMapTile(Map &m, unsigned int row, unsigned int col) const {
 	if ( m.hasObstacle( row,  col )) {
-		wattron(   map_win_, COLOR_PAIR( 2 ));
-		for ( int r = 0; r < tile_height_; r++ ) {
-			for ( int c = 0; c < tile_width_; c++ ) {
-				mvwprintw( map_win_,
-						row * tile_height_ + r,
-						col * tile_width_  + c, " " );
-			}
-		}
-		wattroff(  map_win_, COLOR_PAIR( 2 ));
+		printTile( row, col, 2, " " );
+	}
+	else if ( m.isExit( row,  col )) {
+		printTile( row, col, 3, "S" );
+	}
+	else if ( m.isEntry( row,  col )) {
+		printTile( row, col, 4, "E" );
 	}
 }
 
 void
-DisplayNcurses::printTileRed(unsigned int row, unsigned int col) const {
-		wattron(   map_win_, COLOR_PAIR( 3 ));
-		for ( int r = 0; r < tile_height_; r++ ) {
-			for ( int c = 0; c < tile_width_; c++ ) {
+DisplayNcurses::printTile( unsigned int row, unsigned int col,
+		int color_no, const char* car ) const {
+
+	wattron( map_win_, COLOR_PAIR( color_no ));
+	for ( int r = 0; r < tile_height_; r++ ) {
+		for ( int c = 0; c < tile_width_; c++ ) {
+			if ( r == tile_height_ / 2 && c == tile_width_ / 2 ) {
+				mvwprintw( map_win_,
+						row * tile_height_ + r,
+						col * tile_width_  + c, car );
+			}
+			else {
 				mvwprintw( map_win_,
 						row * tile_height_ + r,
 						col * tile_width_  + c, " " );
 			}
 		}
-		wattroff(  map_win_, COLOR_PAIR( 3 ));
-		wrefresh( map_win_ );
+	}
+	wattroff( map_win_, COLOR_PAIR( color_no ));
+}
+
+void
+DisplayNcurses::printTileRed(unsigned int row, unsigned int col) const {
+	printTile( row, col, 3, " " );
 }
 
 } // end namespace path_finder

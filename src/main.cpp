@@ -4,20 +4,28 @@
 
 #include <cstdio>
 
+#define SCREEN_HEIGHT 22
+#define SCREEN_WIDTH  88
+
+#define TILE_HEIGHT 1
+#define TILE_WIDTH  1
+
 using namespace path_finder;
 
 int main(void) {
-	Maze m( 22, 82 );
+	Maze m( SCREEN_HEIGHT / TILE_HEIGHT, SCREEN_WIDTH / TILE_WIDTH );
 #ifndef DEBUG_DISPLAY
-	DisplayNcurses display( 1, 1 );
+	DisplayNcurses display( TILE_HEIGHT, TILE_WIDTH );
 	display.init( m );
 #endif //DEBUG_DISPLAY
 
-	while ( getchar() != 'q' ) {
 #ifndef DEBUG_DISPLAY
+	while ( getchar() != 'q' ) {
 		display.printMap( m );
-		m.randomize();
+#else
+	while ( 1 ) {
 #endif //DEBUG_DISPLAY
+		m.randomize();
 	}
 
 	return 0;

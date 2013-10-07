@@ -27,7 +27,17 @@ class Map
 		void setCost(int cost, unsigned int row, unsigned int col);
 		int  getCost(unsigned int row, unsigned int col) const;
 
+		bool isEntry( unsigned int row, unsigned int col ) const;
+		bool isExit(  unsigned int row, unsigned int col ) const;
+
 	protected:
+		struct Cell {
+			unsigned int r_, c_;
+		};
+
+		Cell exit_cell_;
+		Cell entry_cell_;
+
 		unsigned int height_, width_;
 		std::vector<std::vector<Tile> > tiles_;
 

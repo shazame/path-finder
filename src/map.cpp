@@ -104,4 +104,15 @@ Map::isValidPos(unsigned int row, unsigned int col) const {
 	return ( row < height_ && col < width_ );
 }
 
+bool
+Map::isEntry( unsigned int row, unsigned int col ) const {
+	return ( entry_cell_.r_ == row && entry_cell_.c_ == col );
+}
+
+bool
+Map::isExit(  unsigned int row, unsigned int col ) const {
+	return ( exit_cell_.r_ == row && exit_cell_.c_ == col );
+}
+
+
 } // end namespace path_finder
