@@ -20,7 +20,8 @@ DisplayNcurses::~DisplayNcurses() {
 	endwin();
 }
 
-// raise and exception instead
+// TODO: raise and exception instead
+// TODO: handle map resize
 void
 DisplayNcurses::init(Map &m) {
 	initscr();

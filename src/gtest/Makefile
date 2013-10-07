@@ -28,6 +28,11 @@ mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
 %Test: %Test.cpp ${SRC_DIR}/%.o
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
 
+looptest: $(BIN)
+	@for FILE in $(BIN); do \
+		$$FILE --gtest_repeat=10000 --gtest_throw_on_failure;             \
+	done
+
 runtest: $(BIN)
 	@for FILE in $(BIN); do \
 		$$FILE;             \

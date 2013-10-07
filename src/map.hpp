@@ -17,7 +17,7 @@ public:
 	// Init the map with a random state
 	virtual void randomize(void);
 
-	void resize(unsigned int h, unsigned int w);
+	virtual void resize(unsigned int h, unsigned int w);
 	unsigned int getHeight(void) const;
 	unsigned int getWidth(void)  const;
 

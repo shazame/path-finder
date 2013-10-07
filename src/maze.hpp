@@ -21,6 +21,8 @@ public:
 	void randomizeStep( void );
 	void randomizeEnd( void );
 
+	virtual void resize(unsigned int h, unsigned int w);
+
 private:
 	std::vector<Cell*> candidate_cell_list;
 

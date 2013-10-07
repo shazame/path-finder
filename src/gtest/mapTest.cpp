@@ -7,9 +7,8 @@ using path_finder::Map;
 TEST (Map, MapInit) {
 	Map bar;
 
-	ASSERT_EQ( 0, bar.getWidth()  );
-	ASSERT_EQ( 0, bar.getHeight() );
-
+	ASSERT_EQ( 0, (int) bar.getWidth()  );
+	ASSERT_EQ( 0, (int) bar.getHeight() );
 }
 
 TEST (Map, MapCoherence) {
@@ -17,7 +16,7 @@ TEST (Map, MapCoherence) {
 
 	ASSERT_FALSE( bar.hasObstacle(2, 5) );
 
-	bar.setObstacle( 2, 5 );
+	bar.setObstacle( true, 2, 5 );
 
 	ASSERT_TRUE( bar.hasObstacle(2, 5) );
 }
@@ -33,7 +32,7 @@ TEST (Map, MapResize) {
 	   }
 	}
 
-	baz.setObstacle( 3, 1 );
+	baz.setObstacle( true, 3, 1 );
 
 	ASSERT_TRUE( baz.hasObstacle(3, 1) );
 }

@@ -8,7 +8,7 @@
 
 namespace path_finder {
 
-Maze::Maze(): Map() {
+Maze::Maze(): Map( 5, 5 ) {
 	randomize();
 }
 
@@ -89,6 +89,12 @@ void
 Maze::randomizeEnd( void ) {
 	setOnBorder( entry_cell_ );
 	setOnBorder( exit_cell_ );
+}
+
+void
+Maze::resize(unsigned int h, unsigned int w) {
+	Map::resize( h, w );
+	randomize();
 }
 
 bool
