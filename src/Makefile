@@ -22,7 +22,7 @@ depend: .depend
 include .depend
 
 %.o:
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $^
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
 
 test: $(OBJ)
 	$(MAKE) -C gtest
