@@ -5,6 +5,8 @@
 #include "map.hpp"
 #include "display.hpp"
 
+#include <stdexcept>
+
 namespace path_finder {
 
 class DisplayNcurses: public Display
@@ -13,7 +15,7 @@ public:
 	DisplayNcurses();
 	DisplayNcurses( int tile_height, int tile_width );
 	~DisplayNcurses();
-	void init( Map & );
+	void init( Map & ) throw ( std::runtime_error );
 	void printMap( Map & )const;
 
 protected:

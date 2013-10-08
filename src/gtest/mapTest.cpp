@@ -16,7 +16,12 @@ TEST (Map, MapCoherence) {
 
 	ASSERT_FALSE( bar.hasObstacle(2, 5) );
 
-	bar.setObstacle( true, 2, 5 );
+	try {
+		bar.setObstacle( true, 2, 5 );
+	}
+	catch ( std::range_error& e ) {
+		std::cerr << "range error caught: " << e.what() << std::endl;
+	}
 
 	ASSERT_TRUE( bar.hasObstacle(2, 5) );
 }
@@ -32,7 +37,12 @@ TEST (Map, MapResize) {
 	   }
 	}
 
-	baz.setObstacle( true, 3, 1 );
+	try {
+		baz.setObstacle( true, 3, 1 );
+	}
+	catch ( std::range_error& e ) {
+		std::cerr << "range error caught: " << e.what() << std::endl;
+	}
 
 	ASSERT_TRUE( baz.hasObstacle(3, 1) );
 }

@@ -4,7 +4,7 @@
 #include "tile.hpp"
 
 #include <cstdlib>
-#include <cstdio>
+#include <iostream>
 
 namespace path_finder {
 
@@ -87,8 +87,16 @@ Maze::randomizeStep( void ) {
 
 void
 Maze::randomizeEnd( void ) {
-	setOnBorder( entry_cell_ );
-	setOnBorder( exit_cell_ );
+	try {
+		setOnBorder( entry_cell_ );
+		setOnBorder( exit_cell_ );
+	}
+	catch ( std::range_error& e ) {
+		std::cerr << "range error caught: " << e.what() << std::endl;
+	}
+	catch ( std::runtime_error& e ) {
+		std::cerr << "runtime error caught: " << e.what() << std::endl;
+	}
 }
 
 void
@@ -103,7 +111,7 @@ Maze::isBorderCell( Cell& c ) {
 }
 
 void
-Maze::setOnBorder( Cell& c ) {
+Maze::setOnBorder( Cell& c ) throw ( std::range_error, std::runtime_error ) {
 	if ( c.r_ == 1 ) {
 		c.r_--;
 	}
@@ -117,8 +125,7 @@ Maze::setOnBorder( Cell& c ) {
 		c.c_++;
 	}
 	else {
-		printf("ERROR: entry not on borders\n");
-		return;
+		throw std::runtime_error( "ERROR: given cell is not on the border." );
 	}
 	setObstacle( false, c.r_, c.c_ );
 }

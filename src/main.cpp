@@ -3,6 +3,8 @@
 #include "maze.hpp"
 
 #include <cstdio>
+#include <iostream>
+#include <stdexcept>
 
 // For usleep
 #include <unistd.h>
@@ -20,7 +22,13 @@ using namespace path_finder;
 int main(void) {
 	Maze m( SCREEN_HEIGHT / TILE_HEIGHT, SCREEN_WIDTH / TILE_WIDTH );
 	DisplayNcurses display( TILE_HEIGHT, TILE_WIDTH );
-	display.init( m );
+	try {
+		display.init( m );
+	}
+	catch ( std::runtime_error& e ) {
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 
 	do {
 		m.randomizeInit();

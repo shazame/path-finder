@@ -1,7 +1,10 @@
 #include "display_ncurses.hpp"
 
 #include <stdlib.h>
-#include <stdio.h>
+
+#include <iostream>
+#include <sstream>
+#include <string>
 
 namespace path_finder {
 
@@ -20,16 +23,14 @@ DisplayNcurses::~DisplayNcurses() {
 	endwin();
 }
 
-// TODO: raise and exception instead
 // TODO: handle map resize
 void
-DisplayNcurses::init(Map &m) {
+DisplayNcurses::init(Map &m) throw ( std::runtime_error ) {
 	initscr();
 
 	if ( has_colors() == FALSE ) {
 		endwin();
-		printf( "Your terminal does not support color\n" );
-		exit( EXIT_FAILURE );
+		throw std::runtime_error( "ncurses display: Your terminal does not support color" );
 	}
     start_color();
 
@@ -51,8 +52,9 @@ DisplayNcurses::init(Map &m) {
 	int win_col = ( scr_col - win_width  ) / 2;
 	if ( win_height > scr_row || win_width > scr_col ) {
 		endwin();
-		printf("Screen too small\n");
-		exit( EXIT_FAILURE );
+		std::ostringstream ss;
+		ss << "ncurses display: Screen too small.\nMax height: " << scr_row << "\nMax width: " << scr_col << "\n";
+		throw std::runtime_error( ss.str().c_str() );
 	}
 	map_win_ = newwin( win_height, win_width, win_row, win_col );
 }

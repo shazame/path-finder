@@ -68,7 +68,12 @@ TEST (Maze, MazeResize) {
 		}
 	}
 
-	baz.setObstacle( true, 3, 1 );
+	try {
+		baz.setObstacle( true, 3, 1 );
+	}
+	catch ( std::range_error& e ) {
+		std::cerr << "range error caught: " << e.what() << std::endl;
+	}
 
 	ASSERT_TRUE( baz.hasObstacle(3, 1) );
 }

@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include <stdexcept>
+
 namespace path_finder {
 
 class Map
@@ -21,7 +23,8 @@ public:
 	unsigned int getHeight(void) const;
 	unsigned int getWidth(void)  const;
 
-	void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col);
+	void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col) 
+		throw ( std::range_error );
 	bool hasObstacle(unsigned int row, unsigned int col) const;
 
 	void setCost(int cost, unsigned int row, unsigned int col);

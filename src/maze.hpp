@@ -4,6 +4,8 @@
 #include "map.hpp"
 #include <vector>
 
+#include <stdexcept>
+
 namespace path_finder {
 
 class Maze: public Map
@@ -27,7 +29,7 @@ private:
 	std::vector<Cell*> candidate_cell_list;
 
 	bool  isBorderCell( Cell& cell );
-	void  setOnBorder( Cell& cell );
+	void  setOnBorder( Cell& cell ) throw ( std::range_error, std::runtime_error );
 	Cell& randomBorderCell( void );
 
 	void  addCellNeighboursToCandidateList( Cell& cell ) ;

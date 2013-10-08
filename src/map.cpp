@@ -53,12 +53,12 @@ Map::getWidth(void) const {
 	return width_;
 }
 
-// TODO
-// Add exception if position over size
 void
-Map::setObstacle(bool is_obstacle, unsigned int row, unsigned int col) {
+Map::setObstacle(bool is_obstacle, unsigned int row, unsigned int col)
+	throw ( std::range_error ) {
+
 	if ( !isValidPos(row, col) ) {
-		return;
+		throw std::range_error( "ERROR: given cell position is out of range." );
 	}
 	else if ( is_obstacle ) {
 		tiles_[row][col].setTileType( Tile::TT_OBSTACLE );	
