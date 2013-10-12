@@ -25,7 +25,8 @@ public:
 
 	void setObstacle(bool is_obstacle ,unsigned int row, unsigned int col) 
 		throw ( std::range_error );
-	bool hasObstacle(unsigned int row, unsigned int col) const;
+	bool hasObstacle(unsigned int row, unsigned int col) const
+		throw ( std::range_error );
 
 	void setCost(int cost, unsigned int row, unsigned int col);
 	int  getCost(unsigned int row, unsigned int col) const;

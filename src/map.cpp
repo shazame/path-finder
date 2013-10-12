@@ -58,13 +58,13 @@ Map::setObstacle(bool is_obstacle, unsigned int row, unsigned int col)
 	throw ( std::range_error ) {
 
 	if ( !isValidPos(row, col) ) {
-		throw std::range_error( "ERROR: given cell position is out of range." );
+		throw std::range_error( "Map.setObstacle(): given cell position is out of range." );
 	}
 	else if ( is_obstacle ) {
-		tiles_[row][col].setTileType( Tile::TT_OBSTACLE );	
+		tiles_[row][col].setTileType( Tile::TT_OBSTACLE );
 	}
 	else {
-		tiles_[row][col].setTileType( Tile::TT_NORMAL );	
+		tiles_[row][col].setTileType( Tile::TT_NORMAL );
 	}
 }
 
@@ -72,9 +72,11 @@ Map::setObstacle(bool is_obstacle, unsigned int row, unsigned int col)
 // Add exception if position over size
 // For the moment everything out of the grid is an obstacle
 bool
-Map::hasObstacle(unsigned int row, unsigned int col) const {
+Map::hasObstacle(unsigned int row, unsigned int col) const
+throw ( std::range_error ) {
+
 	if ( !isValidPos(row, col) ) {
-		return Tile::TT_OBSTACLE;
+		throw std::range_error( "Map.hasObstacle(): given cell position is out of range." );
 	}
 	else {
 		return tiles_[row][col].isObstacle();

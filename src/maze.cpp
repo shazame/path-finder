@@ -125,7 +125,7 @@ Maze::setOnBorder( Cell& c ) throw ( std::range_error, std::runtime_error ) {
 		c.c_++;
 	}
 	else {
-		throw std::runtime_error( "ERROR: given cell is not on the border." );
+		throw std::runtime_error( "Maze.setOnBorder(): given cell is not on the border." );
 	}
 	setObstacle( false, c.r_, c.c_ );
 }
