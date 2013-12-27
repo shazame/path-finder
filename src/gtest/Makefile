@@ -19,13 +19,17 @@ all: ${LIBGTEST} test
 
 test: $(BIN)
 
-${LIBGTEST}:
+${LIBGTEST}: ${GTEST_DIR}
 	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest-all.cc
 	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest_main.cc
 	ar -rv ${LIBGTEST} gtest-all.o gtest_main.o
 
 $(BIN_DIR)/mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
 $(BIN_DIR)/mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
+
+${GTEST_DIR}:
+	wget http://googletest.googlecode.com/files/$@.zip
+	unzip -q $@.zip
 
 $(BIN_DIR)/%Test: %Test.cpp ${SRC_DIR}/%.o
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
@@ -41,8 +45,9 @@ runtest: all
 	done
 
 clean:
-	rm -f ${LIBGTEST} gtest-all.o gtest_main.o *~
+	@ rm -f $(GTEST_DIR).zip ${LIBGTEST} gtest-all.o gtest_main.o
 
 mrproper: clean
-	rm -f $(BIN)
+	@ rm -f $(BIN)
+	@ rm -rf $(GTEST_DIR)
 	@ rmdir --ignore-fail-on-non-empty $(BIN_DIR)
