@@ -2,7 +2,7 @@ path-finder
 ===========
 
 This is just a small personal project to get familiar with maze generation and
-some path finding algorithm.
+some pathfinding algorithms.
 
 Currently only the maze generation part has been finished.
 *ncurses* is used to display the maze. In the futures other GUI might be
