@@ -1,3 +1,5 @@
+project=PathFinder
+
 CPPFLAGS=-I.
 CXXFLAGS=-Wall -Wextra -ggdb
 LDFLAGS=-lncurses
@@ -8,9 +10,9 @@ OBJ=$(SRC:.cpp=.o)
 
 .PHONY: all depend clean
 
-all: main
+all: $(project)
 
-main: $(OBJ)
+$(project): $(OBJ)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
 
 depend: .depend
@@ -31,10 +33,10 @@ runtest:
 	$(MAKE) -C gtest runtest
 
 clean:
-	@ rm -f *~
+	@ rm -f $(OBJ) *.gch .depend *~
 	${MAKE} -C gtest clean
 
 mrproper: clean
-	@ rm -f main $(OBJ) *.gch .depend
+	@ rm -f $(project)
 	${MAKE} -C gtest mrproper
 

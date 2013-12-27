@@ -39,7 +39,7 @@ runtest: $(BIN)
 	done
 
 clean:
-	rm -f $(BIN) *~
+	rm -f gtest-all.o gtest_main.o *~
 
 mrproper: clean
-	rm -f ${LIBGTEST} gtest-all.o gtest_main.o 
+	rm -f ${LIBGTEST} $(BIN)
