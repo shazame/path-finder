@@ -11,7 +11,7 @@ $(shell mkdir -p $(BINDIR))
 
 project=$(BINDIR)/PathFinder
 
-.PHONY: all depend clean
+.PHONY: all runtest depend clean mrproper
 
 all: $(project)
 
@@ -37,9 +37,9 @@ runtest:
 
 clean:
 	@ rm -f $(OBJ) *.gch .depend *~
-	${MAKE} -C gtest clean
+	@ ${MAKE} -C gtest clean
 
 mrproper: clean
 	@ rm -f $(project)
-	${MAKE} -C gtest mrproper
+	@ ${MAKE} -C gtest mrproper
 	@ rmdir --ignore-fail-on-non-empty $(BINDIR)

@@ -13,9 +13,7 @@ LIBGTEST=libgtest_main.a
 TEST=$(wildcard $(TEST_DIR)/*.cpp)
 BIN=$(TEST:$(TEST_DIR)/%.cpp=$(BIN_DIR)/%)
 
-.PHONY: all test clean
-
-all: ${LIBGTEST} test
+.PHONY: test runtest looptest clean mrproper
 
 test: $(BIN)
 
@@ -24,22 +22,22 @@ ${LIBGTEST}: ${GTEST_DIR}
 	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest_main.cc
 	ar -rv ${LIBGTEST} gtest-all.o gtest_main.o
 
-$(BIN_DIR)/mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
-$(BIN_DIR)/mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
-
 ${GTEST_DIR}:
 	wget http://googletest.googlecode.com/files/$@.zip
 	unzip -q $@.zip
 
-$(BIN_DIR)/%Test: %Test.cpp ${SRC_DIR}/%.o
-	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
+$(BIN_DIR)/mapTest: ${SRC_DIR}/tile.o
+$(BIN_DIR)/mazeTest: ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
 
-looptest: all
-	@for FILE in $(BIN); do \
-		$$FILE --gtest_repeat=10000 --gtest_throw_on_failure;             \
+$(BIN_DIR)/%Test: %Test.cpp ${SRC_DIR}/%.o $(LIBGTEST)
+	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ -o $@ ${LDFLAGS}
+
+looptest: $(BIN)
+	@for FILE in $(BIN); do                                   \
+		$$FILE --gtest_repeat=10000 --gtest_throw_on_failure; \
 	done
 
-runtest: all
+runtest: $(BIN)
 	@for FILE in $(BIN); do \
 		$$FILE;             \
 	done
