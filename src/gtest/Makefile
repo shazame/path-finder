@@ -1,5 +1,7 @@
 SRC_DIR=..
 TEST_DIR=.
+BIN_DIR=../../bin/gtest
+$(shell mkdir -p $(BIN_DIR))
 GTEST_DIR=gtest-1.6.0
 
 CPPFLAGS=-I${GTEST_DIR}/include -I${SRC_DIR}
@@ -9,7 +11,7 @@ LDFLAGS=-lpthread
 LIBGTEST=libgtest_main.a
 
 TEST=$(wildcard $(TEST_DIR)/*.cpp)
-BIN=$(TEST:.cpp=)
+BIN=$(TEST:$(TEST_DIR)/%.cpp=$(BIN_DIR)/%)
 
 .PHONY: all test clean
 
@@ -22,24 +24,25 @@ ${LIBGTEST}:
 	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest_main.cc
 	ar -rv ${LIBGTEST} gtest-all.o gtest_main.o
 
-mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
-mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
+$(BIN_DIR)/mapTest: mapTest.cpp ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
+$(BIN_DIR)/mazeTest: mazeTest.cpp ${SRC_DIR}/maze.o ${SRC_DIR}/map.o ${SRC_DIR}/tile.o
 
-%Test: %Test.cpp ${SRC_DIR}/%.o
+$(BIN_DIR)/%Test: %Test.cpp ${SRC_DIR}/%.o
 	${CXX} ${CPPFLAGS} ${CXXFLAGS} $^ ${LIBGTEST} -o $@ ${LDFLAGS}
 
-looptest: $(BIN)
+looptest: all
 	@for FILE in $(BIN); do \
 		$$FILE --gtest_repeat=10000 --gtest_throw_on_failure;             \
 	done
 
-runtest: $(BIN)
+runtest: all
 	@for FILE in $(BIN); do \
 		$$FILE;             \
 	done
 
 clean:
-	rm -f gtest-all.o gtest_main.o *~
+	rm -f ${LIBGTEST} gtest-all.o gtest_main.o *~
 
 mrproper: clean
-	rm -f ${LIBGTEST} $(BIN)
+	rm -f $(BIN)
+	@ rmdir --ignore-fail-on-non-empty $(BIN_DIR)
