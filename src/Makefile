@@ -1,5 +1,3 @@
-project=PathFinder
-
 CPPFLAGS=-I.
 CXXFLAGS=-Wall -Wextra -ggdb
 LDFLAGS=-lncurses
@@ -7,6 +5,11 @@ LDFLAGS=-lncurses
 SRCDIR=.
 SRC=$(wildcard $(SRCDIR)/*.cpp)
 OBJ=$(SRC:.cpp=.o)
+
+BINDIR=../bin
+$(shell mkdir -p $(BINDIR))
+
+project=$(BINDIR)/PathFinder
 
 .PHONY: all depend clean
 
@@ -39,4 +42,4 @@ clean:
 mrproper: clean
 	@ rm -f $(project)
 	${MAKE} -C gtest mrproper
-
+	@ rmdir --ignore-fail-on-non-empty $(BINDIR)
